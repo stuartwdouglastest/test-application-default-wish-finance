@@ -1,0 +1,49 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  creationTimestamp: null
+  name: hacbs-test-project
+  namespace: default
+spec:
+  params:
+  - name: git-revision
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      annotations:
+        build.appstudio.openshift.io/application: test-application
+        build.appstudio.openshift.io/build: "true"
+        build.appstudio.openshift.io/component: hacbs-test-project
+        build.appstudio.openshift.io/type: build
+        build.appstudio.openshift.io/version: "0.1"
+        pipelines.appstudio.openshift.io/type: build
+      creationTimestamp: null
+      generateName: hacbs-test-project-
+      labels:
+        build.appstudio.openshift.io/application: test-application
+        build.appstudio.openshift.io/build: "true"
+        build.appstudio.openshift.io/component: hacbs-test-project
+        build.appstudio.openshift.io/type: build
+        build.appstudio.openshift.io/version: "0.1"
+        pipelines.appstudio.openshift.io/type: build
+      namespace: default
+    spec:
+      params:
+      - name: git-url
+        value: https://github.com/stuartwdouglas/hacbs-test-project
+      - name: output-image
+        value: quay.io/sdouglas/hacbs-test-project:latest-$(tt.params.git-revision)
+      pipelineRef:
+        bundle: quay.io/sdouglas/hacbs-templates-bundle:latest
+        name: java-builder
+      workspaces:
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: appstudio
+        subPath: hacbs-test-project/$(tt.params.git-revision)
+      - name: registry-auth
+        secret:
+          secretName: redhat-appstudio-registry-pull-secret
+    status: {}
+status: {}

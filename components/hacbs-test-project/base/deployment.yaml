@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: hacbs-test-project
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: hacbs-test-project
+    app.kubernetes.io/part-of: test-application
+  name: hacbs-test-project
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: hacbs-test-project
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: hacbs-test-project
+    spec:
+      containers:
+      - image: quay.io/sdouglas/hacbs-test-project
+        imagePullPolicy: Always
+        name: container-image
+        resources: {}
+status: {}

@@ -1,0 +1,26 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  annotations:
+    build.appstudio.openshift.io/application: test-application
+    build.appstudio.openshift.io/build: "true"
+    build.appstudio.openshift.io/component: hacbs-test-project
+    build.appstudio.openshift.io/type: build
+    build.appstudio.openshift.io/version: "0.1"
+    pipelines.appstudio.openshift.io/type: build
+  creationTimestamp: null
+  name: hacbs-test-project
+  namespace: default
+spec:
+  namespaceSelector: {}
+  resources: {}
+  serviceAccountName: pipeline
+  triggers:
+  - bindings:
+    - kind: ClusterTriggerBinding
+      ref: github-push
+    template:
+      ref: hacbs-test-project
+status:
+  configuration:
+    generatedName: ""

@@ -1,0 +1,22 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    build.appstudio.openshift.io/application: test-application
+    build.appstudio.openshift.io/build: "true"
+    build.appstudio.openshift.io/component: hacbs-test-project
+    build.appstudio.openshift.io/type: build
+    build.appstudio.openshift.io/version: "0.1"
+    pipelines.appstudio.openshift.io/type: build
+  creationTimestamp: null
+  name: elhacbs-test-project
+  namespace: default
+spec:
+  path: /
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: el-hacbs-test-project
+    weight: null
+status: {}
